@@ -13,11 +13,12 @@ import json
 
 GCS_BUCKET_NAME = os.environ["GCS_BUCKET_NAME"]
 
-
 def download_data():
     print("download_data")
 
     bucket_name = GCS_BUCKET_NAME
+
+    ## print("bucket_name is:", bucket_name)
 
     # Clear dataset folders
     dataset_prep_folder = "mushroom_dataset_prep"
@@ -30,13 +31,13 @@ def download_data():
     # Initiate Storage client
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
-    blobs = bucket.list_blobs(prefix="mushrooms_labeled/")
+    blobs = bucket.list_blobs(prefix="mushroom_labelled/")
 
     # Download annotations
     for blob in blobs:
         print("Annotation file:", blob.name)
 
-        if not blob.name.endswith("mushrooms_labeled/"):
+        if not blob.name.endswith("mushroom_labelled/"):
             filename = os.path.basename(blob.name)
             local_file_path = os.path.join(dataset_prep_folder, filename)
             blob.download_to_filename(local_file_path)
